@@ -1,0 +1,41 @@
+[package]
+description = "A boilerplate for rust."
+documentation = "https://github.com/kannkyo/boilerplate-rust"
+edition = "2021"
+homepage = "https://github.com/kannkyo/boilerplate-rust"
+keywords = ["boilerplate", "template", "rust"]
+license = "MIT"
+name = "boilerplate_rust"
+readme = "README.md"
+repository = "https://github.com/kannkyo/boilerplate-rust"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+regex = "0.1.41"
+time = "0.1.12"
+
+[profile.dev]
+codegen-units = 256 
+debug = true 
+debug-assertions = true 
+incremental = true 
+lto = false 
+opt-level = 0 
+overflow-checks = true 
+panic = 'unwind' 
+rpath = false 
+split-debuginfo = '...' # Platform-specific.
+
+[profile.release]
+codegen-units = 16 
+debug = false 
+debug-assertions = false 
+incremental = false 
+lto = false 
+opt-level = 3 
+overflow-checks = false 
+panic = 'unwind' 
+rpath = false 
+split-debuginfo = '...' # Platform-specific.
