@@ -16,6 +16,9 @@ version = "0.1.0"
 regex = "0.1.41"
 time = "0.1.12"
 
+[dev-dependencies]
+cargo-cyclonedx = "0.3.4"
+
 [profile.dev]
 codegen-units = 256 
 debug = true 
