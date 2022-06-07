@@ -18,9 +18,6 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: setup
-        run: |
-          cargo install cargo-cyclonedx
       - name: build
         run: cargo build --verbose
       - name: run tests
