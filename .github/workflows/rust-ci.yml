@@ -22,3 +22,7 @@ jobs:
         run: cargo build --verbose
       - name: run tests
         run: cargo test --verbose
+      - name: generate sbom
+        run: |
+          cargo install cargo-cyclonedx
+          cargo cyclonedx
