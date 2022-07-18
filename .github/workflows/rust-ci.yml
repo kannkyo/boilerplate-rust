@@ -34,3 +34,35 @@ jobs:
 
       - name: Generate SBOM
         run: cargo cyclonedx
+
+  sast-clippy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+
+      - name: Initialize clippy
+        uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af
+        with:
+          profile: minimal
+          toolchain: stable
+          components: clippy
+          override: true
+
+      - name: Setup clippy environment
+        run: cargo install clippy-sarif sarif-fmt
+
+      - name: Run clippy
+        run: cargo clippy
+          --all-features
+          --message-format=json | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
+        continue-on-error: true
+
+      - name: Publish clippy report to GitHub Security
+        uses: github/codeql-action/upload-sarif@3f62b754e23e0dd60f91b744033e1dc1654c0ec6
+        with:
+          sarif_file: rust-clippy-results.sarif
+          wait-for-processing: true
