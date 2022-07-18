@@ -1,27 +1,34 @@
-name: rust publish
+name: Rust Publish
 
 on:
+  workflow_dispatch: # for debug
   push:
     branches: [main]
     tags:
       - v*.*.*
-  workflow_dispatch:
-
 env:
   CARGO_TERM_COLOR: always
+
+permissions: read-all
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: build
+      - name: Checkout repository
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+
+      - name: Build
         run: cargo build --verbose
-      - name: generate document
+
+      - name: Generate document
         run: cargo doc --no-deps
-      - name: deploy document to gh-pages
-        uses: crazy-max/ghaction-github-pages@v2
+
+      - name: Publish API document to GitHub pages
+        uses: crazy-max/ghaction-github-pages@eb08c35b9fab86751edfff4e55cd5cde35ff0e52
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
