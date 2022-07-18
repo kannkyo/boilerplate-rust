@@ -1,29 +1,36 @@
-name: rust ci
+name: Rust CI
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
   schedule:
     - cron: "0 15 * * 0"
 
 env:
   CARGO_TERM_COLOR: always
 
+permissions: read-all
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: setup
-        run: |
-          cargo install cargo-cyclonedx
-      - name: build
+      - name: Checkout repository
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+
+      - name: Setup cargo environment
+        run: cargo install cargo-cyclonedx
+
+      - name: Build
         run: cargo build --verbose
-      - name: run tests
+
+      - name: Test cargo code by cargo
         run: cargo test --verbose
-      - name: generate sbom
+
+      - name: Generate SBOM
         run: cargo cyclonedx
